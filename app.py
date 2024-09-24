@@ -205,6 +205,9 @@ def vote(unique_id):
     """Handle voting for a specific poll."""
     poll = Poll.query.filter_by(unique_id=unique_id).first_or_404()
     user_ip = request.remote_addr
+    print(f"User IP: {user_ip}")
+
+
 
     if request.method == "POST":
     # Get user's IP address
@@ -220,9 +223,10 @@ def vote(unique_id):
                 vote = Vote(option_id=option_id, ip_address=user_ip)
                 db.session.add(vote)
                 db.session.commit()
-                flash("Vote recorded", "success")
+                flash(f"User IP: {user_ip}, Vote recorded", "success")
+
             else:
-                flash("You have already voted", "info")
+                flash(f"User IP: {user_ip}, You have already voted", "info")
 
         return redirect(url_for("view_poll", unique_id=unique_id))
 
