@@ -36,8 +36,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI', "sqlite:///pol
 # Initialise the app with the extension
 db.init_app(app)
 
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
 
 
 def login_required(f):
@@ -189,24 +189,33 @@ def create_poll():
 
 @app.route("/view_poll/<unique_id>", methods=["GET", "POST"])
 def view_poll(unique_id):
-    """View a specific poll and handle voting."""
+    """View a specific poll."""
     poll = Poll.query.filter_by(unique_id=unique_id).first_or_404()
     options = Option.query.filter_by(poll_id=poll.id).all()
+
+     # Calculate the total votes and max votes
     total_votes = sum(option.vote_count for option in options)
-    
-    # Calculate maximum vote count
     max_votes = max((option.vote_count for option in options), default=0)
-    
-    # Get user's IP address
+        
+    return render_template("view_poll.html", poll=poll, options=options, total_votes=total_votes, max_votes=max_votes, get_color=get_color)
+
+
+@app.route('/vote/<unique_id>', methods = ['POST'])
+def vote(unique_id):
+    """Handle voting for a specific poll."""
+    poll = Poll.query.filter_by(unique_id=unique_id).first_or_404()
     user_ip = request.remote_addr
-    
+
     if request.method == "POST":
+    # Get user's IP address
         option_id = request.form.get("option_id")
+
         if option_id:
-            # Check if this IP address has already voted
             existing_vote = Vote.query.join(Option).filter(
-                Option.poll_id == poll.id, Vote.ip_address == user_ip
+                Option.poll_id == poll.id, 
+                Vote.ip_address == user_ip
             ).first()
+
             if not existing_vote:
                 vote = Vote(option_id=option_id, ip_address=user_ip)
                 db.session.add(vote)
@@ -214,9 +223,9 @@ def view_poll(unique_id):
                 flash("Vote recorded", "success")
             else:
                 flash("You have already voted", "info")
-            return redirect(url_for("view_poll", unique_id=unique_id))
-        
-    return render_template("view_poll.html", poll=poll, options=options, total_votes=total_votes, max_votes=max_votes, get_color=get_color)
+
+        return redirect(url_for("view_poll", unique_id=unique_id))
+
 
 
 @app.route('/view_all_polls')

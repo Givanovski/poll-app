@@ -176,3 +176,5 @@ node_modules/
 
 # Logs
 *.log
+
+flask_session/
