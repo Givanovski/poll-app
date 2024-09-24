@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+    <div class="col-10 col-sm-8 col-lg-6">
+      <img src="{{ url_for('static', filename='assets/img/poll.jpg') }}" class="d-block mx-lg-auto img-fluid" alt="survey" width="700" height="500" loading="lazy">
+    </div>
+    <div class="col-lg-6">
+      <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Create and Share Your Polls</h1>
+      <p class="lead">Easily create, share, and view polls with Poll App. Start engaging with your community and make decisions together in a fun and interactive way!</p>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+        {% if session.get("user_id") %}
+            <!-- User is logged in -->
+            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                <a href="{{ url_for('create_poll') }}" class="btn btn-primary btn-lg px-4 gap-3">Create Poll</a>
+                <a href="{{ url_for('view_all_polls') }}" class="btn btn-outline-secondary btn-lg px-4">View All Polls</a>
+            </div>
+        {% else %}
+            <!-- User is not logged in -->
+            <div class="card text-center mx-auto" style="max-width: 500px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); background: #f9f9f9;">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Join the Fun!</h5>
+                    <p class="card-text mb-4">To create and share polls, please <a href="{{ url_for('login') }}" class="btn btn-primary">login</a></p>
+                    <p class="card-text text-muted">Be part of our interactive community!</p>
+                </div>
+            </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

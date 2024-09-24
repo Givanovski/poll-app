@@ -1,0 +1,140 @@
+.poll-container {
+    max-width: 600px;  
+    margin: auto;       
+}
+
+  .poll-form .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  #poll-question, #poll-options input {
+    margin-top: 1rem; 
+  }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
+
+footer {
+    margin: 0;
+    padding: 10px 0; 
+    background-color: #f8f9fa;
+}
+
+.alert-info { 
+  background-color: #d1ecf1; color: #0c5460; 
+}
+
+.alert-success { 
+  background-color: #d4edda; color: #155724; 
+}
+
+.alert-warning { 
+  background-color: #fff3cd; color: #856404; 
+}
+
+.alert-danger { 
+  background-color: #f8d7da; color: #721c24; 
+}
+
+.poll {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.poll:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    padding: 1rem; /* Adjust padding for aesthetics */
+}
+
+.card-body-poll {
+    min-height: 330px;
+    display: flex;
+    flex-direction: column; /* Align items in a column */
+    justify-content: space-between; /* Space out elements */
+    padding: 20px; /* Ensure padding for content */
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column; /* Align items in a column */
+    justify-content: space-between; /* Space out elements */
+    padding: 20px; /* Ensure padding for content */
+}
+
+.form-control {
+    border-radius: 0.25rem; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.poll-title {
+    font-family: 'Arial', sans-serif; /* Change to your preferred font */
+    font-size: 1.5rem; /* Adjust size as needed */
+    line-height: 1.4; /* Space between lines */
+    margin-bottom: 1rem; /* Space below the title */
+}
+
+.poll-participants {
+    min-height: 40px; /* Adjust this value as needed */
+    display: flex; /* Align text vertically */
+    align-items: center; /* Center text vertically */
+}
+
+
+.view {
+    width: 100%;
+    margin-top: 10px; /* Space between participants text and button */
+}
+
+h1 {
+    font-family: 'Roboto', sans-serif; /* Use a modern font */
+    font-size: 2.5rem; /* Increase the font size */
+    color: #007bff; /* Bootstrap primary color */
+}
+
+.list-group-item {
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.list-group-item:hover {
+    transform: scale(1.02);
+}
+
+.list-group-item.bg-success {
+    font-weight: bold; /* Make the winning option bold */
+}
+
+.btn-primary {
+    background-color: #007bff; /* Bootstrap primary color */
+    border: none; /* Remove default border */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Bootstrap danger color */
+}
+
+.btn-danger:hover {
+    background-color: #c82333; /* Darker shade on hover */
+}
+
+.btn:hover {
+    transform: scale(1.05); /* Slightly increase button size on hover */
+    transition: transform 0.2s ease-in-out;
+}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4 text-primary">{{ poll.question }}</h1>
+
+    <form action="{{ url_for('view_poll', unique_id=poll.unique_id) }}" method="post">
+        <div class="list-group">
+            {% for option in options %}
+                {% set vote_count = option.vote_count %}
+                {% set is_max_votes = vote_count == max_votes %}
+                <div class="list-group-item d-flex justify-content-between align-items-center"
+                     style="border: 2px solid #343a40; border-radius: 8px; margin-bottom: 10px; background-color: {{ get_color(vote_count, total_votes) }};">
+                    <span class="flex-grow-1 fs-5">{{ option.text }}</span>
+                    <span class="badge bg-secondary mx-2 text-center" style="min-width: 80px;">{{ vote_count }} votes</span>
+                    <button type="submit" name="option_id" value="{{ option.id }}" class="btn btn-primary btn-sm">Vote</button>
+                </div>
+            {% endfor %}
+        </div>
+    </form>
+
+    <!-- Back and Share Buttons in the same row -->
+    <div class="d-flex justify-content-between mt-4">
+        <a href="{{ url_for('view_all_polls') }}" class="btn btn-secondary">Back to Polls</a>
+        <button class="btn btn-danger" onclick="copyLink('{{ request.url }}')">Share Poll</button>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+
+

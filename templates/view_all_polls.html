@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    {% if polls %}
+        <div class="row">
+            {% for poll in polls %}
+                <div class="col-md-4">
+                    <a href="{{ url_for('view_poll', unique_id=poll.unique_id) }}" class="poll card mb-4 text-decoration-none shadow">
+                        <div class="card-body-poll bg-light border rounded">
+                            <h3 class="poll-title card-title text-primary fw-bold">
+                                {{ poll.question }}
+                            </h3>
+                            <small class="poll-participants text-muted d-block mb-2 mt-2">
+                                <strong>{{ poll.options|sum(attribute='vote_count') }}</strong>
+                                Participants
+                            </small>
+                            <div class="view btn btn-success">View</div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">No polls have been created yet. Check back later!</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+
