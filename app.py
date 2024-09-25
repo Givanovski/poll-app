@@ -208,7 +208,7 @@ def vote(unique_id):
     # Check if the user has already voted by looking for a cookie
     has_voted_cookie = request.cookies.get(f'has_voted_{unique_id}')
     if has_voted_cookie:
-        flash("You have already voted from this device", "info")
+        flash("You have already voted", "info")
         return redirect(url_for("view_poll", unique_id=unique_id))
 
     if request.method == "POST":
