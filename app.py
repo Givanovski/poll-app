@@ -10,7 +10,7 @@ import secrets
 import sqlite3
 
 from models import db, User, Poll, Option, Vote 
-from utils import get_color
+from utils import get_color, get_real_ip
 
 
 # Load environment variables from .env file
@@ -200,35 +200,32 @@ def view_poll(unique_id):
     return render_template("view_poll.html", poll=poll, options=options, total_votes=total_votes, max_votes=max_votes, get_color=get_color)
 
 
-@app.route('/vote/<unique_id>', methods = ['POST'])
+@app.route('/vote/<unique_id>', methods=['POST'])
 def vote(unique_id):
-    """Handle voting for a specific poll."""
-    poll = Poll.query.filter_by(unique_id=unique_id).first_or_404()
-    user_ip = request.remote_addr
-    print(f"User IP: {user_ip}")
 
-
+    user_ip = get_real_ip()
+    
+    # Check if the user has already voted by looking for a cookie
+    has_voted_cookie = request.cookies.get(f'has_voted_{unique_id}')
+    if has_voted_cookie:
+        flash("You have already voted from this device", "info")
+        return redirect(url_for("view_poll", unique_id=unique_id))
 
     if request.method == "POST":
-    # Get user's IP address
         option_id = request.form.get("option_id")
 
         if option_id:
-            existing_vote = Vote.query.join(Option).filter(
-                Option.poll_id == poll.id, 
-                Vote.ip_address == user_ip
-            ).first()
+            vote = Vote(option_id=option_id, ip_address=user_ip)
+            db.session.add(vote)
+            db.session.commit()
+            flash(f"Vote recorded", "success")
 
-            if not existing_vote:
-                vote = Vote(option_id=option_id, ip_address=user_ip)
-                db.session.add(vote)
-                db.session.commit()
-                flash(f"User IP: {user_ip}, Vote recorded", "success")
+            # Set a cookie indicating the user has voted
+            response = make_response(redirect(url_for("view_poll", unique_id=unique_id)))
+            response.set_cookie(f'has_voted_{unique_id}', 'true', max_age=30 * 24 * 60 * 60)  # Expire in 30 days
+            return response
 
-            else:
-                flash(f"User IP: {user_ip}, You have already voted", "info")
-
-        return redirect(url_for("view_poll", unique_id=unique_id))
+    return redirect(url_for("view_poll", unique_id=unique_id))
 
 
 

@@ -1,3 +1,6 @@
+from flask import request
+
+
 def get_color(vote_count, total_votes):
     if total_votes == 0:
         return "#f8f9fa"  # Light gray for options with no votes
@@ -15,3 +18,10 @@ def get_color(vote_count, total_votes):
         else:
             return "#dc3545"  # Red for minority
 
+
+def get_real_ip():
+
+    if request.headers.get('X-Forwarded-For'):
+        return request.headers.get('X-Forwarded-For').split(',')[0]
+    
+    return request.remote_addr
